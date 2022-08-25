@@ -1,5 +1,6 @@
 package com.example.loan_backend.model;
 
+
 public class login {
     private String mailid;
     private String password;
