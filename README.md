@@ -6,7 +6,7 @@
 
 ## Folder Details
 
-**/controllers** : *Write the files regarding controllers in this* \n
+**/controllers** : *Write the files regarding controllers in this* <br>
 **/filters** : *Write the files regarding filters here*
 **/models** : *Model classes should be here*
 **/repositories** :*Repositories of Database models here*
