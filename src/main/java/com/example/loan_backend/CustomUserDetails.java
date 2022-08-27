@@ -18,10 +18,8 @@ public class CustomUserDetails implements UserDetails {
   public CustomUserDetails(User user) {
     this.username = user.getEmail();
     this.password = user.getPassword();
-    this.roles = Arrays.asList(user.getRole().split(","))
-                     .stream()
-                     .map(SimpleGrantedAuthority::new)
-                     .collect(Collectors.toList());
+    this.roles = Arrays.asList(user.getRole().split(",")).stream().map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
   }
 
   @Override

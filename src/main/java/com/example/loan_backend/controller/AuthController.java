@@ -23,11 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-  @Autowired private UserRepository userRepository;
-  @Autowired private AuthenticationManager authenticationManager;
-  @Autowired private CustomUserDetailsService customUserDetailsService;
-  @Autowired private PasswordEncoder passwordEncoder;
-  @Autowired private JwtUtil jwtUtil;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private AuthenticationManager authenticationManager;
+  @Autowired
+  private CustomUserDetailsService customUserDetailsService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private JwtUtil jwtUtil;
 
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody User user) {
@@ -40,8 +45,7 @@ public class AuthController {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       userRepository.save(user);
 
-      return new ResponseEntity<>("Account Created Successfully",
-                                  HttpStatus.CREATED);
+      return new ResponseEntity<>("Account Created Successfully", HttpStatus.CREATED);
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
@@ -50,12 +54,10 @@ public class AuthController {
   @PostMapping("/signin")
   public ResponseEntity<?> sigin(@RequestBody LoginRequest request) {
     try {
-      authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(request.email,
-                                                  request.password));
+      authenticationManager
+          .authenticate(new UsernamePasswordAuthenticationToken(request.email, request.password));
 
-      CustomUserDetails user =
-          customUserDetailsService.loadUserByUsername(request.email);
+      CustomUserDetails user = customUserDetailsService.loadUserByUsername(request.email);
 
       String jwt = jwtUtil.generateToken(user);
 

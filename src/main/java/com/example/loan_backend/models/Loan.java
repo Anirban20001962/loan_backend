@@ -13,9 +13,13 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Loan implements Serializable {
-  @Id @GeneratedValue(strategy = GenerationType.AUTO) private UUID id;
-  @Column(nullable = false) private String status;
-  @Column(nullable = false) private double amount;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private UUID id;
+  @Column(nullable = false)
+  private String status;
+  @Column(nullable = false)
+  private double amount;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;

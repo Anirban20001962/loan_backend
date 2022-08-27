@@ -1,5 +1,12 @@
 # Note
 
+## Code Formatting
+
+If you are using Intellij, Eclipse, etc. visit the link below to use google-java-format:
+[Google-Java-Format](https://github.com/google/google-java-format)
+
+For vscode the.vscode folder has all configuration
+
 ## Envirnoment File
 
     add a .env file at the root of the project at your local setup with following contents: 
