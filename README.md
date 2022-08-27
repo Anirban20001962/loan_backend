@@ -1,6 +1,6 @@
 # Note
 
-## Envirnoment File
+## Envirnoment File <br>
 
     add a .env file at the root of the project at your local setup with following contents: 
 
@@ -9,7 +9,8 @@
     DATABASE_PASSWORD=examly
     JWT_SECRET=secret
 
-## Folder Details
+
+## Folder Details <br>
 
     /controllers     : Write the files regarding controllers in this
     /filters     : Write the files regarding filters here
@@ -19,3 +20,4 @@
     /response    :All response related files like request validation classes , request params details , etc.
     /services    :Services to be stored here
     /util    : miscellaneous stuff here
+
