@@ -21,8 +21,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  @Autowired private CustomUserDetailsService customUserDetailsService;
-  @Autowired private JwtRequestFilter jwtRequestFilter;
+  @Autowired
+  private CustomUserDetailsService customUserDetailsService;
+  @Autowired
+  private JwtRequestFilter jwtRequestFilter;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -30,31 +32,22 @@ public class SecurityConfig {
   }
 
   @Bean
-  public AuthenticationManager
-  authenticationManager(AuthenticationConfiguration auth) throws Exception {
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration auth)
+      throws Exception {
     return auth.getAuthenticationManager();
   }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(t -> t.disable())
-        .authorizeHttpRequests(auth
-                               -> auth.mvcMatchers("/auth/**")
-                                      .permitAll()
-                                      .mvcMatchers("/admin")
-                                      .hasRole("ADMIN")
-                                      .mvcMatchers("/loan/**")
-                                      .hasRole("USER")
-                                      .anyRequest()
-                                      .denyAll())
+        .authorizeHttpRequests(
+            auth -> auth.mvcMatchers("/auth/**").permitAll().mvcMatchers("/admin").hasRole("ADMIN")
+                .mvcMatchers("/loan/**").hasRole("USER").anyRequest().denyAll())
         .sessionManagement(
-            session
-            -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .userDetailsService(customUserDetailsService)
-        .cors(cors -> cors.disable());
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .userDetailsService(customUserDetailsService).cors(cors -> cors.disable());
 
-    http.addFilterBefore(jwtRequestFilter,
-                         UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
@@ -64,8 +57,7 @@ public class SecurityConfig {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Arrays.asList("*"));
     configuration.setAllowedMethods(Arrays.asList("*"));
-    UrlBasedCorsConfigurationSource source =
-        new UrlBasedCorsConfigurationSource();
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
   }
