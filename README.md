@@ -2,10 +2,16 @@
 
 ## Code Formatting
 
-If you are using Intellij, Eclipse, etc. visit the link below to use google-java-format:
-[Google-Java-Format](https://github.com/google/google-java-format)
+### VS Code 
 
-For vscode the.vscode folder has all configuration
+    Install Checkstyle for Java Extension
+
+    .vscode/settings.json
+
+    {
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "java.checkstyle.configuration": "/google_checks.xml"
+    }
 
 ## Envirnoment File
 
@@ -28,14 +34,5 @@ For vscode the.vscode folder has all configuration
     /util    : miscellaneous stuff here
 
 
-## VS Code 
 
-Install Checkstyle for Java Extension
-
-.vscode/settings.json
-
-{
-	"java.configuration.updateBuildConfiguration": "automatic",
-	"java.checkstyle.configuration": "/google_checks.xml"
-}
 
