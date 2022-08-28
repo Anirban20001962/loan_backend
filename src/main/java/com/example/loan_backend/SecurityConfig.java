@@ -52,7 +52,7 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .userDetailsService(customUserDetailsService).cors(cors -> cors.disable())
-        .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+        .exceptionHandling(hand -> hand.authenticationEntryPoint(authEntryPoint));
 
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

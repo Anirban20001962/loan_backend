@@ -26,3 +26,16 @@ For vscode the.vscode folder has all configuration
     /response    :All response related files like request validation classes , request params details , etc.
     /services    :Services to be stored here
     /util    : miscellaneous stuff here
+
+
+## VS Code 
+
+Install Checkstyle for Java Extension
+
+.vscode/settings.json
+
+{
+	"java.configuration.updateBuildConfiguration": "automatic",
+	"java.checkstyle.configuration": "/google_checks.xml"
+}
+

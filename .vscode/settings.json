@@ -1,5 +1,4 @@
 {
 	"java.configuration.updateBuildConfiguration": "automatic",
-	"java.format.settings.profile": "GoogleStyle",
-	"java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml"
+	"java.checkstyle.configuration": "/google_checks.xml"
 }
