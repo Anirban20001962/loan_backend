@@ -37,33 +37,28 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody User user) {
 
-    try {
-      if (userRepository.existsByEmail(user.getEmail()))
-        throw new Exception("Account Already exists");
+    if (userRepository.existsByEmail(user.getEmail()))
+      throw new BadCredentialsException("Account Already exists");
 
-      user.setRole("ROLE_USER");
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-      userRepository.save(user);
+    user.setRole("ROLE_USER");
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    userRepository.save(user);
 
-      return new ResponseEntity<>("Account Created Successfully", HttpStatus.CREATED);
-    } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    return new ResponseEntity<>("Account Created Successfully", HttpStatus.CREATED);
+
   }
 
   @PostMapping("/signin")
   public ResponseEntity<?> sigin(@RequestBody LoginRequest request) {
-    try {
-      authenticationManager
-          .authenticate(new UsernamePasswordAuthenticationToken(request.email, request.password));
 
-      CustomUserDetails user = customUserDetailsService.loadUserByUsername(request.email);
+    authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(request.email, request.password));
 
-      String jwt = jwtUtil.generateToken(user);
+    CustomUserDetails user = customUserDetailsService.loadUserByUsername(request.email);
 
-      return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.ACCEPTED);
-    } catch (BadCredentialsException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    String jwt = jwtUtil.generateToken(user);
+
+    return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.ACCEPTED);
+
   }
 }
