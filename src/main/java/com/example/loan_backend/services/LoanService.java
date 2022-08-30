@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.loan_backend.models.Loan;
 import com.example.loan_backend.repositories.LoanRepository;
+import com.example.loan_backend.Status;
 
 @Service
 public class LoanService {
@@ -32,5 +33,26 @@ public class LoanService {
     //delete loan by id
     public void deleteLoanById(UUID id){
         loanrepo.deleteById(id);
+    }
+
+    //Accept loan(admin)
+    public void acceptLoanById(UUID id){
+        Optional<Loan> oldloan = loanrepo.findById(id);
+        if(oldloan.isPresent()){
+            Loan newloan = oldloan.get();
+            newloan.setStatus(String.valueOf(Status.ACCEPTED));
+            loanrepo.save(newloan);
+        }
+        
+    }
+
+    //Reject Loan(admin)
+    public void rejectLoanById(UUID id){
+        Optional<Loan> oldloan = loanrepo.findById(id);
+        if(oldloan.isPresent()){
+            Loan newloan = oldloan.get();
+            newloan.setStatus(String.valueOf(Status.REJECTED));
+            loanrepo.save(newloan);
+        }
     }
 }
