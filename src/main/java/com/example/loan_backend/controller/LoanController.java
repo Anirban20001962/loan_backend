@@ -1,15 +1,42 @@
 package com.example.loan_backend.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.example.loan_backend.error_handling.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-@RestController
+import com.example.loan_backend.models.Loan;
+import com.example.loan_backend.models.User;
+import com.example.loan_backend.services.LoanService;
+import com.example.loan_backend.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+
 @RequestMapping("/loan")
+@RestController
 public class LoanController {
-  @GetMapping("")
-  public String checkAccess() throws EntityNotFoundException {
-    throw new EntityNotFoundException("Not Found");
+
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private LoanService loanService;
+
+
+  @PostMapping(value="/reqLoan/{email}")
+  public ResponseEntity<Object> addloan(@RequestBody Loan loan, @PathVariable String email){
+    User user = (User) userService.getUserByEmail(email);
+    loan.setUser(user);
+    loanService.saveLoan(loan);
+    return new ResponseEntity<>(true,HttpStatus.OK);
   }
+
+  @GetMapping(value="/getAllLoans/{email}")
+  public List<Loan> getMyLoans(@PathVariable String email){
+    return loanService.getLoansByUserEmail(email);
+  }
+
+
 }

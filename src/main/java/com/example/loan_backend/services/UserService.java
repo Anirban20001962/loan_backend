@@ -34,4 +34,9 @@ public class UserService {
         userRepository.findAllByEmailStartingWithIgnoreCase(pattern).forEach(allUsers::add);
         return allUsers;
     }
+    public List<User> getAllUsers() {
+        List<User> allUsers = new ArrayList<>();
+        userRepository.findAll().forEach(allUsers::add);
+        return allUsers;
+    }
 }
