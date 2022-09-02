@@ -47,7 +47,7 @@ public class SecurityConfig {
 
     http.csrf(t -> t.disable())
         .authorizeHttpRequests(
-            auth -> auth.mvcMatchers("/auth/**").permitAll().mvcMatchers("/admin").hasRole("ADMIN")
+            auth -> auth.mvcMatchers("/auth/**").permitAll().mvcMatchers("/admin/**").hasRole("ADMIN")
                 .mvcMatchers("/loan/**").hasRole("USER").anyRequest().denyAll())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
