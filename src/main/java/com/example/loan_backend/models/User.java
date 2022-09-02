@@ -1,5 +1,8 @@
 package com.example.loan_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +18,8 @@ import javax.persistence.OneToMany;
 public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(columnDefinition = "VARCHAR(36)")
+  @Type(type = "uuid-char")
   private UUID id;
   @Column(nullable = false)
   private String firstname;
@@ -29,6 +34,7 @@ public class User implements Serializable {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   private List<Loan> loans;
 
+  @JsonIgnoreProperties("user")
   public List<Loan> getLoans() {
     return this.loans;
   }

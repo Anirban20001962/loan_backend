@@ -40,7 +40,7 @@ public class AdminController {
         return loanService.getLoansByUserEmail(email);
     }
 
-    @GetMapping(value="/acceptLoan/{loan_id}")
+    @PostMapping(value="/acceptLoan/{loan_id}")
     public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id){
         loanService.acceptLoanById(loan_id);
         return new ResponseEntity<>(true,HttpStatus.OK);

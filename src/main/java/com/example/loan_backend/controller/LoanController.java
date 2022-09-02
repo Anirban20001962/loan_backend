@@ -27,8 +27,8 @@ public class LoanController {
 
   @PostMapping(value="/reqLoan/{email}")
   public ResponseEntity<Object> addloan(@RequestBody Loan loan, @PathVariable String email){
-    User user = (User) userService.getUserByEmail(email);
-    loan.setUser(user);
+    List<User> users = userService.getUserByEmail(email);
+    loan.setUser(users.get(0));
     loanService.saveLoan(loan);
     return new ResponseEntity<>(true,HttpStatus.OK);
   }

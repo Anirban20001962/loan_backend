@@ -2,6 +2,7 @@ package com.example.loan_backend.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class UserService {
 
         userRepository.findAllByEmailStartingWithIgnoreCase(pattern).forEach(allUsers::add);
         return allUsers;
+    }
+
+    public Optional<User> getUniqueUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email);
     }
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
