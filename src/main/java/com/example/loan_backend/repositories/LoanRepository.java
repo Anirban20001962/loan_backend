@@ -1,6 +1,5 @@
 package com.example.loan_backend.repositories;
 
-import com.example.loan_backend.LoanStatus;
 import com.example.loan_backend.models.Loan;
 
 import java.util.UUID;

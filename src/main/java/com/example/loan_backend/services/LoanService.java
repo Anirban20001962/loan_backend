@@ -52,7 +52,7 @@ public class LoanService {
         if (email == null)
             throw new EntityNotFoundException("Email should not be null");
 
-        Optional<User> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmailIgnoreCase(email);
         user.orElseThrow(() -> new EntityNotFoundException("user not found"));
 
         return user.get().getLoans();
