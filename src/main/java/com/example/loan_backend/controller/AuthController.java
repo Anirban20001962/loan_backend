@@ -37,7 +37,7 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody User user) {
 
-    if (userRepository.existsByEmail(user.getEmail()))
+    if (userRepository.existsByEmailIgnoreCase(user.getEmail()))
       throw new BadCredentialsException("Account Already exists");
 
     user.setRole("ROLE_USER");

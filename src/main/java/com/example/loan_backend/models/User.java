@@ -29,6 +29,14 @@ public class User implements Serializable {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   private List<Loan> loans;
 
+  public List<Loan> getLoans() {
+    return this.loans;
+  }
+
+  public void setLoans(List<Loan> loans) {
+    this.loans = loans;
+  }
+
   public UUID getId() {
     return this.id;
   }
