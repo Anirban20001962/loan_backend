@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.loan_backend.models.Loan;
 import com.example.loan_backend.repositories.LoanRepository;
+import com.example.loan_backend.Status;
 
 import javax.transaction.Transactional;
 
@@ -95,5 +96,4 @@ public class LoanService {
             loanRepo.save(loan.get());
         }
     }
-
 }
