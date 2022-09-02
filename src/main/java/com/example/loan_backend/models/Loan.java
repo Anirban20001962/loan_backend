@@ -1,5 +1,7 @@
 package com.example.loan_backend.models;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -15,6 +17,8 @@ import javax.persistence.ManyToOne;
 public class Loan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "VARCHAR(36)")
+    @Type(type = "uuid-char")
     private UUID id;
     @Column(nullable = false)
     private String status;

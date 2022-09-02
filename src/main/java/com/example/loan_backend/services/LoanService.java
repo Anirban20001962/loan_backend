@@ -5,32 +5,67 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.loan_backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.loan_backend.models.Loan;
 import com.example.loan_backend.repositories.LoanRepository;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class LoanService {
-    @Autowired private LoanRepository loanrepo;
-    //returns list of loans
-    public List<Loan> getAllLoans(){
-        List<Loan>loans = new ArrayList<>();
-        Iterable<Loan>itl =  loanrepo.findAll();
-        itl.forEach(loans::add);
-        return loans;
+
+    @Autowired
+    private LoanRepository loanRepo;
+
+    public void addLoan(Loan loan) {
+        loan.setStatus("PENDING");
+
+        loanRepo.save(loan);
     }
-    //save loan
-    public void saveLoan(Loan l){
-        loanrepo.save(l);
+
+    public List<Loan> getLoansByUser(UUID id) {
+
+        System.out.println(loanRepo.findLoansByUser(new User(id)));
+
+		/*List<Loan> result = new ArrayList<Loan>();
+
+		loanRepo.findAll().forEach(result::add);
+
+		List<Loan> filter = new ArrayList<Loan>();
+
+		int i;
+
+		for(i=0;i<result.size();i++)
+		{
+			if(result.get(i).getUser().getId().equals(id))
+			{
+				filter.add(result.get(i));
+			}
+		}*/
+
+        return loanRepo.findLoansByUser(new User(id));
     }
-    //get loan by id
-    public Optional<Loan> getLoanById(UUID id){
-        return loanrepo.findById(id);
+
+
+
+
+    public List<Loan> getLoansByStatus(String status) {
+
+
+        return loanRepo.findLoansByStatus(status);
     }
-    //delete loan by id
-    public void deleteLoanById(UUID id){
-        loanrepo.deleteById(id);
+
+
+    public List<Loan> getAllLoans() {
+        List<Loan> result = new ArrayList<Loan>();
+
+        loanRepo.findAll().forEach(result::add);
+
+        return result;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.example.loan_backend.models;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +17,8 @@ import javax.persistence.OneToMany;
 public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(columnDefinition = "VARCHAR(36)")
+  @Type(type = "uuid-char")
   private UUID id;
   @Column(nullable = false)
   private String firstname;
@@ -28,6 +32,14 @@ public class User implements Serializable {
   private String email;
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   private List<Loan> loans;
+
+  public User(UUID id) {
+    this.id = id;
+  }
+
+  public User() {
+
+  }
 
   public UUID getId() {
     return this.id;

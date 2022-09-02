@@ -57,6 +57,7 @@ public class AuthController {
     CustomUserDetails user = customUserDetailsService.loadUserByUsername(request.email);
 
     String jwt = jwtUtil.generateToken(user);
+    System.out.println(jwt);
 
     return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.ACCEPTED);
 
