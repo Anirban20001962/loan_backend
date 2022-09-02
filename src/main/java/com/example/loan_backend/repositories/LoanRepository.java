@@ -16,4 +16,6 @@ public interface LoanRepository extends CrudRepository<Loan, UUID> {
 
     public List<Loan> findLoansByStatus(String status);
 
+
+    Optional<Loan> findById(UUID id);
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
 	@Autowired
 	private UserService userService;
@@ -35,14 +36,14 @@ public class AdminController {
 	}
 	
 	
-	@RequestMapping(value="/get_all_loans",method=RequestMethod.GET) 
+	@RequestMapping(value="/getAllLoans",method=RequestMethod.GET)
 	@CrossOrigin(origins = "http://localhost:3000")
 	public List<Loan> getAllLoans(){
 		return loanService.getAllLoans();
 	}
 	
 	
-	@RequestMapping(value="/get_loans_user/{user_id}",method=RequestMethod.GET) 
+	@RequestMapping(value="/getLoansByUser/{user_id}",method=RequestMethod.GET)
 	@CrossOrigin(origins = "http://localhost:3000")
 	public List<Loan> getLoansByUser(@PathVariable UUID user_id){
 		if(userService.verifyUser(user_id))
@@ -54,11 +55,24 @@ public class AdminController {
 			return new ArrayList<Loan>();
 		}
 	}
-	
-	
-	@RequestMapping(value="/get_loans_status/{status}",method=RequestMethod.GET) 
+
+	@RequestMapping(value="/acceptLoan/{loan_id}", method = RequestMethod.POST)
 	@CrossOrigin(origins = "http://localhost:3000")
-	public List<Loan> getLoansByStatus(@PathVariable String status){
-		return loanService.getLoansByStatus(status);
+	public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id){
+		loanService.acceptLoan(loan_id);
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/rejectLoan/{loan_id}", method = RequestMethod.POST)
+	@CrossOrigin(origins = "http://localhost:3000")
+	public ResponseEntity<Object> rejectLoan(@PathVariable UUID loan_id){
+		loanService.rejectLoan(loan_id);
+		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/getPendingLoans",method=RequestMethod.GET)
+	@CrossOrigin(origins = "http://localhost:3000")
+	public List<Loan> getPendingLoans(){
+		return loanService.getPendingLoans();
 	}
 }

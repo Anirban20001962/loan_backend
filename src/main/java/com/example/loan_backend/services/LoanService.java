@@ -51,12 +51,22 @@ public class LoanService {
     }
 
 
+    public List<Loan> getPendingLoans() {
+        List<Loan> result = new ArrayList<Loan>();
 
+        loanRepo.findAll().forEach(result::add);
 
-    public List<Loan> getLoansByStatus(String status) {
+        List<Loan> filter = new ArrayList<Loan>();
 
+        int i;
 
-        return loanRepo.findLoansByStatus(status);
+        for (i = 0; i < result.size(); i++) {
+            if (result.get(i).getStatus().equals("PENDING")) {
+                filter.add(result.get(i));
+            }
+        }
+
+        return filter;
     }
 
 
@@ -66,6 +76,24 @@ public class LoanService {
         loanRepo.findAll().forEach(result::add);
 
         return result;
+    }
+
+    public void acceptLoan(UUID id) {
+        Optional<Loan> loan = loanRepo.findById(id);
+
+        if (loan.isPresent()) {
+            loan.get().setStatus("ACCEPTED");
+            loanRepo.save(loan.get());
+        }
+    }
+
+    public void rejectLoan(UUID id) {
+        Optional<Loan> loan = loanRepo.findById(id);
+
+        if (loan.isPresent()) {
+            loan.get().setStatus("REJECTED");
+            loanRepo.save(loan.get());
+        }
     }
 
 }
