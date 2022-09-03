@@ -25,9 +25,8 @@ public class LoanService {
 
     // returns list of loans
     public List<Loan> getAllLoans() {
-        List<Loan> loans = new ArrayList<>();
-        Iterable<Loan> itl = loanrepo.findAll();
-        itl.forEach(loans::add);
+        List<Loan> loans = new ArrayList<Loan>();
+        loanrepo.findAll().forEach(loans::add);
         return loans;
     }
 
