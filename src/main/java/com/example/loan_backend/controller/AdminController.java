@@ -1,6 +1,5 @@
 package com.example.loan_backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,8 +10,11 @@ import com.example.loan_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
@@ -23,37 +25,35 @@ public class AdminController {
     @Autowired
     private LoanService loanService;
 
-    @GetMapping(value="/users")
-    public List<User> getUsers(){
+    @GetMapping(value = "/users")
+    public List<User> getUsers() {
         return userService.getAllUsers();
     }
 
-
-    @GetMapping(value="/getAllLoans")
-    public List<Loan> getAllLoans(){
+    @GetMapping(value = "/getAllLoans")
+    public List<Loan> getAllLoans() {
         return loanService.getAllLoans();
     }
 
-
-    @GetMapping(value="/getLoansByUser/{email}")
-    public List<Loan> getLoansByUser(@PathVariable String email){
+    @GetMapping(value = "/getLoansByUser/{email}")
+    public List<Loan> getLoansByUser(@PathVariable String email) {
         return loanService.getLoansByUserEmail(email);
     }
 
-    @PostMapping(value="/acceptLoan/{loan_id}")
-    public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id){
+    @PostMapping(value = "/acceptLoan/{loan_id}")
+    public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id) {
         loanService.acceptLoanById(loan_id);
-        return new ResponseEntity<>(true,HttpStatus.OK);
+        return new ResponseEntity<>("Loan Accepted Successfully", HttpStatus.OK);
     }
 
-    @PostMapping(value="/rejectLoan/{loan_id}")
-    public ResponseEntity<Object> rejectLoan(@PathVariable UUID loan_id){
+    @PostMapping(value = "/rejectLoan/{loan_id}")
+    public ResponseEntity<Object> rejectLoan(@PathVariable UUID loan_id) {
         loanService.rejectLoanById(loan_id);
-        return new ResponseEntity<>(true,HttpStatus.OK);
+        return new ResponseEntity<>("Loan Rejected Successfully", HttpStatus.OK);
     }
 
-    @GetMapping(value="/getPendingLoans")
-    public List<Loan> getPendingLoans(){
+    @GetMapping(value = "/getPendingLoans")
+    public List<Loan> getPendingLoans() {
         return loanService.getAllPendingLoans();
     }
 }
