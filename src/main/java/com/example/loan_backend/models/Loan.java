@@ -29,26 +29,12 @@ public class Loan implements Serializable {
     @Column(nullable = false)
     private String purpose;
     @Column(nullable = false)
-    private int emiMonths;
+    private int emimonths;
     @Column(nullable = false)
-    private float intrest;
+    private float interest;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-  /*public Loan(UUID id, String status, double amount, String purpose, int emiMonths, float intrest, User user) {
-    this.id = id;
-    this.status = status;
-    this.amount = amount;
-    this.purpose = purpose;
-    this.emiMonths = emiMonths;
-    this.intrest = intrest;
-    this.user = user;
-  }
-
-  public Loan() {
-
-  }*/
 
     public UUID getId() {
         return id;
@@ -82,20 +68,20 @@ public class Loan implements Serializable {
         this.purpose = purpose;
     }
 
-    public int getEmiMonths() {
-        return emiMonths;
+    public int getEmimonths() {
+        return this.emimonths;
     }
 
-    public void setEmiMonths(int emiMonths) {
-        this.emiMonths = emiMonths;
+    public void setEmimonths(int emimonths) {
+        this.emimonths = emimonths;
     }
 
-    public float getIntrest() {
-        return intrest;
+    public float getInterest() {
+        return interest;
     }
 
-    public void setIntrest(float intrest) {
-        this.intrest = intrest;
+    public void setInterest(float interest) {
+        this.interest = interest;
     }
 
     @JsonIgnoreProperties("loans")
