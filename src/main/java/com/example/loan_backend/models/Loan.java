@@ -1,5 +1,6 @@
 package com.example.loan_backend.models;
 
+import com.example.loan_backend.LoanStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
@@ -48,8 +49,8 @@ public class Loan implements Serializable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(LoanStatus status) {
+        this.status = String.valueOf(status);
     }
 
     public double getAmount() {

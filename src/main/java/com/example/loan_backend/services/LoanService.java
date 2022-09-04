@@ -32,7 +32,7 @@ public class LoanService {
 
     // save loan
     public void saveLoan(Loan l) {
-        l.setStatus(String.valueOf(LoanStatus.PENDING));
+        l.setStatus(LoanStatus.PENDING);
         loanrepo.save(l);
     }
 
@@ -72,7 +72,7 @@ public class LoanService {
         oldloan.orElseThrow(() -> new EntityNotFoundException("Loan Not Found"));
 
         Loan newloan = oldloan.get();
-        newloan.setStatus(String.valueOf(LoanStatus.ACCEPTED));
+        newloan.setStatus(LoanStatus.ACCEPTED);
         loanrepo.save(newloan);
 
     }
@@ -84,7 +84,7 @@ public class LoanService {
         oldloan.orElseThrow(() -> new EntityNotFoundException("Loan Not Found"));
 
         Loan newloan = oldloan.get();
-        newloan.setStatus(String.valueOf(LoanStatus.REJECTED));
+        newloan.setStatus(LoanStatus.REJECTED);
         loanrepo.save(newloan);
     }
 }
