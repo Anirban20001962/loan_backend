@@ -1,127 +1,135 @@
 package com.example.loan_backend.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.example.loan_backend.LoanStatus;
 import com.example.loan_backend.models.Loan;
 import com.example.loan_backend.models.User;
 import com.example.loan_backend.repositories.LoanRepository;
 import com.example.loan_backend.repositories.UserRepository;
 
-@SpringBootTest
+// Unit test for loan service
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class LoanServiceTests {
+    @Mock
+    private LoanRepository loanRepository;
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
 
     @Autowired
+    @InjectMocks
     private LoanService loanService;
 
-    @Autowired
-    private LoanRepository loanRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    private Loan loan1;
+    private Loan loan2;
     private User user;
+
+    private List<Loan> loans;
 
     @BeforeEach
     public void setUp() {
+        loans = new ArrayList<>();
+        loan1 = new Loan();
+        loan2 = new Loan();
         user = new User();
-        user.setFirstname("user");
-        user.setLastname("xyz");
-        user.setPassword(passwordEncoder.encode("123456"));
-        user.setEmail("user@email.com");
-        user.setRole("ROLE_USER");
 
-        userRepository.save(user);
+        user.setEmail("loanService@test.com");
+
+        loan1.setUser(user);
+        loan1.setUser(user);
+
+        loans.add(loan1);
+        loans.add(loan2);
+
+        user.setLoans(loans);
+
+    }
+
+    @AfterEach
+    public void tearDown() {
+        loans = null;
+        loan1 = null;
+        loan2 = null;
+        user = null;
     }
 
     @Test
-    @Transactional
-    public void saveLoan() {
-        Loan loan = new Loan();
-        loan.setPurpose("for x purpose");
-        loan.setAmount(1000);
-        loan.setEmimonths(5);
-        loan.setInterest(5);
-        loan.setUser(user);
+    public void saveLoanTest() {
 
-        loanService.saveLoan(loan);
+        when(loanRepository.save(any())).thenReturn(null);
+        loanService.saveLoan(loan1);
 
-        Optional<Loan> loanFound = loanRepository.findById(loan.getId());
-
-        assertTrue(loanFound.isPresent());
-        assertTrue(loanFound.get().getStatus() == String.valueOf(LoanStatus.PENDING));
+        assertTrue(true);
     }
 
     @Test
-    @Transactional
+    public void getAllLoansTest() {
+
+        when(loanRepository.findAll()).thenReturn(loans);
+        List<Loan> foundLoans = loanService.getAllLoans();
+
+        assertEquals(2, foundLoans.size());
+    }
+
+    @Test
+    public void getLoanById() {
+
+        when(loanRepository.findById(loan1.getId())).thenReturn(Optional.of(loan1));
+
+        Optional<Loan> found = loanService.getLoanById(loan1.getId());
+
+        assertEquals(true, found.get().getId() == loan1.getId());
+    }
+
+    @Test
     public void getLoansByUserEmailTest() {
-        Loan loan = new Loan();
-        loan.setPurpose("for x purpose");
-        loan.setAmount(1000);
-        loan.setEmimonths(5);
-        loan.setInterest(5);
-        loan.setUser(user);
+        when(userRepository.findByEmailIgnoreCase(user.getEmail())).thenReturn(Optional.of(user));
 
-        loanService.saveLoan(loan);
+        List<Loan> foundLoans = loanService.getLoansByUserEmail(user.getEmail());
 
-        List<Loan> loansFound = loanService.getLoansByUserEmail(user.getEmail());
-
-        assertTrue(loansFound.size() == 1);
+        assertEquals(2, foundLoans.size());
     }
 
     @Test
-    @Transactional
+    public void getAllPendingLoans() {
+        when(loanRepository.findAllByStatus(any())).thenReturn(loans);
+
+        List<Loan> found = loanService.getAllPendingLoans();
+        assertEquals(2, found.size());
+
+    }
+
+    @Test
     public void acceptLoanByIdTest() {
-        Loan loan = new Loan();
-        loan.setPurpose("for x purpose");
-        loan.setAmount(1000);
-        loan.setEmimonths(5);
-        loan.setInterest(5);
-        loan.setUser(user);
-        loan.setUser(user);
+        when(loanRepository.findById(loan1.getId())).thenReturn(Optional.of(loan1));
 
-        loanService.saveLoan(loan);
-
-        loanService.acceptLoanById(loan.getId());
-
-        Optional<Loan> loanFound = loanRepository.findById(loan.getId());
-
-        assertTrue(loanFound.get().getStatus() == String.valueOf(LoanStatus.ACCEPTED));
+        loanService.acceptLoanById(loan1.getId());
+        assertTrue(true);
     }
 
     @Test
-    @Transactional
-    public void rejecttLoanByIdTest() {
-        Loan loan = new Loan();
-        loan.setPurpose("for x purpose");
-        loan.setAmount(1000);
-        loan.setEmimonths(5);
-        loan.setInterest(5);
-        loan.setUser(user);
+    public void rejectLoanByIdTest() {
+        when(loanRepository.findById(loan1.getId())).thenReturn(Optional.of(loan1));
 
-        loanService.saveLoan(loan);
-
-        loanService.rejectLoanById(loan.getId());
-
-        Optional<Loan> loanFound = loanRepository.findById(loan.getId());
-
-        assertTrue(loanFound.get().getStatus() == String.valueOf(LoanStatus.REJECTED));
+        loanService.rejectLoanById(loan1.getId());
+        assertTrue(true);
     }
-
 }
