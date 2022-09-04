@@ -1,5 +1,6 @@
 package com.example.loan_backend.controller;
 
+import com.example.loan_backend.AccountRoles;
 import com.example.loan_backend.CustomUserDetails;
 import com.example.loan_backend.models.User;
 import com.example.loan_backend.repositories.UserRepository;
@@ -40,7 +41,7 @@ public class AuthController {
     if (userRepository.existsByEmailIgnoreCase(user.getEmail()))
       throw new BadCredentialsException("Account Already exists");
 
-    user.setRole("ROLE_USER");
+    user.setRole(AccountRoles.ROLE_USER);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     userRepository.save(user);
 

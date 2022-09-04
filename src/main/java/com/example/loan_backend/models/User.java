@@ -1,5 +1,6 @@
 package com.example.loan_backend.models;
 
+import com.example.loan_backend.AccountRoles;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
@@ -79,8 +80,8 @@ public class User implements Serializable {
     return this.role;
   }
 
-  public void setRole(String role) {
-    this.role = role;
+  public void setRole(AccountRoles role) {
+    this.role = String.valueOf(role);
   }
 
   public String getEmail() {
