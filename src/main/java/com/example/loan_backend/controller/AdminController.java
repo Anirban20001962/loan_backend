@@ -10,11 +10,7 @@ import com.example.loan_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -40,16 +36,16 @@ public class AdminController {
         return loanService.getLoansByUserEmail(email);
     }
 
-    @PostMapping(value = "/acceptLoan/{loan_id}")
+    @PutMapping(value = "/acceptLoan/{loan_id}")
     public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id) {
         loanService.acceptLoanById(loan_id);
-        return new ResponseEntity<>("Loan Accepted Successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Loan Accepted Successfully", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/rejectLoan/{loan_id}")
+    @PutMapping(value = "/rejectLoan/{loan_id}")
     public ResponseEntity<Object> rejectLoan(@PathVariable UUID loan_id) {
         loanService.rejectLoanById(loan_id);
-        return new ResponseEntity<>("Loan Rejected Successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Loan Rejected Successfully", HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/getPendingLoans")
