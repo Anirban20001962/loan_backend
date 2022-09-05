@@ -1,7 +1,12 @@
 package com.example.loan_backend.models;
 
 import com.example.loan_backend.LoanStatus;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.example.loan_backend.request.LoanRequest;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
@@ -16,6 +21,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Loan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,72 +34,24 @@ public class Loan implements Serializable {
     private String status;
     @Column(nullable = false)
     private double amount;
-
     @Column(nullable = false)
     private String purpose;
     @Column(nullable = false)
     private int emimonths;
     @Column(nullable = false)
-    private float interest;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private double interest;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
 
     public void setStatus(LoanStatus status) {
         this.status = String.valueOf(status);
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public int getEmimonths() {
-        return this.emimonths;
-    }
-
-    public void setEmimonths(int emimonths) {
-        this.emimonths = emimonths;
-    }
-
-    public float getInterest() {
-        return interest;
-    }
-
-    public void setInterest(float interest) {
-        this.interest = interest;
-    }
-
-    @JsonIgnoreProperties("loans")
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-
+    public Loan(LoanRequest lr) {
+        this.amount = lr.amount;
+        this.emimonths = lr.emimonths;
+        this.interest = lr.interest;
+        this.purpose = lr.purpose;
     }
 }

@@ -3,8 +3,10 @@ package com.example.loan_backend.controller;
 import java.util.List;
 import java.util.UUID;
 
-import com.example.loan_backend.models.Loan;
+import javax.validation.constraints.Email;
+
 import com.example.loan_backend.models.User;
+import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +29,18 @@ public class AdminController {
     }
 
     @GetMapping(value = "/getAllLoans")
-    public List<Loan> getAllLoans() {
-        return loanService.getAllLoans();
+    public ResponseEntity<?> getAllLoans() {
+        return new ResponseEntity<>(new MsgDataResponse("All Loans", loanService.getAllLoans()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getLoansByUser/{email}")
-    public List<Loan> getLoansByUser(@PathVariable String email) {
-        return loanService.getLoansByUserEmail(email);
+    public ResponseEntity<?> getLoansByUser(@PathVariable @Email String email) {
+        return new ResponseEntity<>(new MsgDataResponse("All User Loans", loanService.getLoansByUserEmail(email)),
+                HttpStatus.OK);
     }
 
     @PutMapping(value = "/acceptLoan/{loan_id}")
-    public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id) {
+    public ResponseEntity<?> acceptLoan(@PathVariable UUID loan_id) {
         loanService.acceptLoanById(loan_id);
         return new ResponseEntity<>("Loan Accepted Successfully", HttpStatus.ACCEPTED);
     }
@@ -49,8 +52,9 @@ public class AdminController {
     }
 
     @GetMapping(value = "/getPendingLoans")
-    public List<Loan> getPendingLoans() {
-        return loanService.getAllPendingLoans();
+    public ResponseEntity<?> getPendingLoans() {
+        return new ResponseEntity<>(new MsgDataResponse("All Pending Loans", loanService.getAllPendingLoans()),
+                HttpStatus.OK);
     }
     
     @GetMapping(value = "/getUsersByEmail/{email}")

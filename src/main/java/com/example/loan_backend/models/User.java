@@ -1,7 +1,15 @@
 package com.example.loan_backend.models;
 
 import com.example.loan_backend.AccountRoles;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.example.loan_backend.request.SignupRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
@@ -16,6 +24,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,69 +37,25 @@ public class User implements Serializable {
   private String firstname;
   @Column(nullable = false)
   private String lastname;
+  @JsonProperty(access = Access.WRITE_ONLY)
   @Column(nullable = false)
   private String password;
+  @JsonIgnore
   @Column(nullable = false)
   private String role;
   @Column(nullable = false, unique = true)
   private String email;
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
   private List<Loan> loans;
-
-  @JsonIgnoreProperties("user")
-  public List<Loan> getLoans() {
-    return this.loans;
-  }
-
-  public void setLoans(List<Loan> loans) {
-    this.loans = loans;
-  }
-
-  public UUID getId() {
-    return this.id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getFirstname() {
-    return this.firstname;
-  }
-
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
-  }
-
-  public String getLastname() {
-    return this.lastname;
-  }
-
-  public void setLastname(String lastname) {
-    this.lastname = lastname;
-  }
-
-  public String getPassword() {
-    return this.password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getRole() {
-    return this.role;
-  }
 
   public void setRole(AccountRoles role) {
     this.role = String.valueOf(role);
   }
 
-  public String getEmail() {
-    return this.email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
+  public User(SignupRequest sr) {
+    this.firstname = sr.firstname;
+    this.lastname = sr.lastname;
+    this.email = sr.email;
   }
 }
