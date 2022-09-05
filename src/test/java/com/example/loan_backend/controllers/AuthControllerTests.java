@@ -23,9 +23,9 @@ public class AuthControllerTests {
         @Test
         public void testSignUp() throws Exception {
                 // signup data for admin
-                String content = new JsonMaker().add("email",
-                                "user2@test.com").add("password", "password").add("firstname",
-                                                "user1")
+                String content = new JsonMaker().add("email", "user2@test.com")
+                                .add("password", "password")
+                                .add("firstname", "user1")
                                 .add("lastname", "meow").build();
 
                 RequestBuilder req = post("/auth/signup").contentType(mediaType).content(content).accept(mediaType);

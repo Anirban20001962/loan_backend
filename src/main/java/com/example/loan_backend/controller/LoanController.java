@@ -1,9 +1,13 @@
 package com.example.loan_backend.controller;
 
 import com.example.loan_backend.models.Loan;
+import com.example.loan_backend.request.LoanRequest;
 import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +29,10 @@ public class LoanController {
   private LoanService loanService;
 
   @PostMapping(value = "/reqLoan")
-  public ResponseEntity<Object> addloan(@RequestBody Loan loan) {
+  public ResponseEntity<Object> addloan(@Valid @RequestBody LoanRequest lr) {
+
+    Loan loan = new Loan(lr);
+
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     loan.setUser(userService.getUniqueUserByEmail(email).get());
     loanService.saveLoan(loan);
