@@ -1,5 +1,9 @@
 # Note
 
+## Documentation
+
+Get the documentation by starting the app and visiting [this link](http://localhost:8080/api-docs/swagger-ui/index.html)
+
 ## Code Formatting
 
 ### VS Code 
