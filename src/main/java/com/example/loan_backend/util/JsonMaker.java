@@ -20,6 +20,11 @@ public class JsonMaker {
         return this;
     }
 
+    public JsonMaker add(String field, double val) throws IOException {
+        json.writeNumberField(field, val);
+        return this;
+    }
+
     public String build() throws IOException {
         json.writeEndObject();
         json.close();

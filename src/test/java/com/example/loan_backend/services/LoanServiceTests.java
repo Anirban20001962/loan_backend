@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.example.loan_backend.models.Loan;
 import com.example.loan_backend.models.User;
@@ -26,7 +25,6 @@ import com.example.loan_backend.repositories.UserRepository;
 
 // Unit test for loan service
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
 public class LoanServiceTests {
     @Mock
     private LoanRepository loanRepository;

@@ -32,7 +32,7 @@ public class User implements Serializable {
   private String role;
   @Column(nullable = false, unique = true)
   private String email;
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
   private List<Loan> loans;
 
   @JsonIgnoreProperties("user")

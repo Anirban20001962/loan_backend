@@ -1,8 +1,7 @@
 package com.example.loan_backend.controller;
 
-import java.util.List;
-
 import com.example.loan_backend.models.Loan;
+import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,10 @@ public class LoanController {
   }
 
   @GetMapping(value = "/getAllLoans")
-  public List<Loan> getMyLoans() {
+  public ResponseEntity<?> getMyLoans() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    return loanService.getLoansByUserEmail(email);
+    return new ResponseEntity<>(new MsgDataResponse("All Loans", loanService.getLoansByUserEmail(email)),
+        HttpStatus.OK);
   }
 
 }

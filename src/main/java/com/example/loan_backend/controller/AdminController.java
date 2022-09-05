@@ -39,13 +39,13 @@ public class AdminController {
     @PutMapping(value = "/acceptLoan/{loan_id}")
     public ResponseEntity<Object> acceptLoan(@PathVariable UUID loan_id) {
         loanService.acceptLoanById(loan_id);
-        return new ResponseEntity<>("Loan Accepted Successfully", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Loan Accepted Successfully", HttpStatus.OK);
     }
 
     @PutMapping(value = "/rejectLoan/{loan_id}")
     public ResponseEntity<Object> rejectLoan(@PathVariable UUID loan_id) {
         loanService.rejectLoanById(loan_id);
-        return new ResponseEntity<>("Loan Rejected Successfully", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Loan Rejected Successfully", HttpStatus.OK);
     }
 
     @GetMapping(value = "/getPendingLoans")
