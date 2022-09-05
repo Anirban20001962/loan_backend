@@ -5,9 +5,13 @@ import com.example.loan_backend.CustomUserDetails;
 import com.example.loan_backend.models.User;
 import com.example.loan_backend.repositories.UserRepository;
 import com.example.loan_backend.request.LoginRequest;
+import com.example.loan_backend.request.SignupRequest;
 import com.example.loan_backend.response.LoginResponse;
 import com.example.loan_backend.services.CustomUserDetailsService;
 import com.example.loan_backend.util.JwtUtil;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +40,15 @@ public class AuthController {
   private JwtUtil jwtUtil;
 
   @PostMapping("/signup")
-  public ResponseEntity<?> signup(@RequestBody User user) {
+  public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest sr) {
+
+    User user = new User(sr);
 
     if (userRepository.existsByEmailIgnoreCase(user.getEmail()))
       throw new BadCredentialsException("Account Already exists");
 
     user.setRole(AccountRoles.ROLE_USER);
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setPassword(passwordEncoder.encode(sr.password));
     userRepository.save(user);
 
     return new ResponseEntity<>("Account Created Successfully", HttpStatus.CREATED);
@@ -50,7 +56,7 @@ public class AuthController {
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<?> sigin(@RequestBody LoginRequest request) {
+  public ResponseEntity<?> sigin(@Valid @RequestBody LoginRequest request) {
 
     authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(request.email, request.password));
@@ -59,7 +65,7 @@ public class AuthController {
 
     String jwt = jwtUtil.generateToken(user);
 
-    return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
 
   }
 }
