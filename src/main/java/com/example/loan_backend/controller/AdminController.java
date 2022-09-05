@@ -52,4 +52,19 @@ public class AdminController {
     public List<Loan> getPendingLoans() {
         return loanService.getAllPendingLoans();
     }
+    
+    @GetMapping(value = "/getUsersByEmail/{email}")
+    public List<User> getUsersByEmail(@PathVariable String email) {
+        return userService.getUsersByEmail(email);
+    }
+    
+    @GetMapping(value = "/getUsersByFirstName/{firstname}")
+    public List<User> getUsersByFirstName(@PathVariable String firstname) {
+        return userService.getUsersByFirstName(firstname);
+    }
+    
+    @GetMapping(value = "/getUsersByLastName/{lastname}")
+    public List<User> getUsersByLastName(@PathVariable String lastname) {
+        return userService.getUsersByLastName(lastname);
+    }
 }
