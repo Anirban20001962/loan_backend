@@ -1,11 +1,9 @@
 package com.example.loan_backend.controller;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.validation.constraints.Email;
 
-import com.example.loan_backend.models.User;
 import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
@@ -24,8 +22,8 @@ public class AdminController {
     private LoanService loanService;
 
     @GetMapping(value = "/users")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<?> getUsers() {
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getAllUsers()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getAllLoans")
