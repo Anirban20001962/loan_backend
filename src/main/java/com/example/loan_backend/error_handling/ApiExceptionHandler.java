@@ -56,6 +56,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @Override
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         return buildResponseEntity(
