@@ -7,6 +7,7 @@ import com.example.loan_backend.repositories.UserRepository;
 import com.example.loan_backend.request.LoginRequest;
 import com.example.loan_backend.request.SignupRequest;
 import com.example.loan_backend.response.LoginResponse;
+import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.CustomUserDetailsService;
 import com.example.loan_backend.util.JwtUtil;
 
@@ -51,7 +52,7 @@ public class AuthController {
     user.setPassword(passwordEncoder.encode(sr.password));
     userRepository.save(user);
 
-    return new ResponseEntity<>("Account Created Successfully", HttpStatus.CREATED);
+    return new ResponseEntity<>(new MsgDataResponse("Account Created Successfully", null), HttpStatus.CREATED);
 
   }
 

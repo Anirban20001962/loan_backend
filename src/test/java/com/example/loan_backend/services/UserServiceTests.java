@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.loan_backend.AccountRoles;
 import com.example.loan_backend.models.User;
 import com.example.loan_backend.repositories.UserRepository;
 
@@ -62,7 +63,9 @@ public class UserServiceTests {
     @Test
     public void getUserByFirstNameTest() {
 
-        when(userRepository.findAllByFirstnameStartingWithIgnoreCase("use")).thenReturn(users);
+        when(userRepository.findAllByFirstnameStartingWithIgnoreCaseAndRole("use",
+                String.valueOf(AccountRoles.ROLE_USER)))
+                .thenReturn(users);
 
         List<User> found = userService.getUserByFirstName("use");
 
@@ -73,7 +76,9 @@ public class UserServiceTests {
     @Test
     public void getUserByLastNameTest() {
 
-        when(userRepository.findAllByLastnameStartingWithIgnoreCase("use")).thenReturn(users);
+        when(userRepository.findAllByLastnameStartingWithIgnoreCaseAndRole("use",
+                String.valueOf(AccountRoles.ROLE_USER)))
+                .thenReturn(users);
 
         List<User> found = userService.getUserByLastName("use");
 
@@ -84,7 +89,8 @@ public class UserServiceTests {
     @Test
     public void getUserByEmailTest() {
 
-        when(userRepository.findAllByEmailStartingWithIgnoreCase("use")).thenReturn(users);
+        when(userRepository.findAllByEmailStartingWithIgnoreCaseAndRole("use", String.valueOf(AccountRoles.ROLE_USER)))
+                .thenReturn(users);
 
         List<User> found = userService.getUserByEmail("use");
 
@@ -106,7 +112,8 @@ public class UserServiceTests {
     @Test
     public void getAllUsersTest() {
 
-        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findAllByRole(String.valueOf(AccountRoles.ROLE_USER)))
+                .thenReturn(users);
 
         List<User> found = userService.getAllUsers();
 

@@ -73,21 +73,24 @@ public class UserRepositoryTests {
 
     @Test
     public void findAllByFirstnameStartingWithIgnoreCaseTest() {
-        List<User> found = (List<User>) userRepository.findAllByFirstnameStartingWithIgnoreCase("loan");
+        List<User> found = (List<User>) userRepository.findAllByFirstnameStartingWithIgnoreCaseAndRole("loan",
+                String.valueOf(AccountRoles.ROLE_USER));
 
         assertEquals(2, found.size());
     }
 
     @Test
     public void findAllByEmailStartingWithIgnoreCaseTest() {
-        List<User> found = (List<User>) userRepository.findAllByEmailStartingWithIgnoreCase("user");
+        List<User> found = (List<User>) userRepository.findAllByEmailStartingWithIgnoreCaseAndRole("user",
+                String.valueOf(AccountRoles.ROLE_USER));
 
         assertEquals(2, found.size());
     }
 
     @Test
     public void findAllByLastnameStartingWithIgnoreCaseTest() {
-        List<User> found = (List<User>) userRepository.findAllByLastnameStartingWithIgnoreCase("serv");
+        List<User> found = (List<User>) userRepository.findAllByLastnameStartingWithIgnoreCaseAndRole("serv",
+                String.valueOf(AccountRoles.ROLE_USER));
 
         assertEquals(2, found.size());
     }

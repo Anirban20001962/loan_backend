@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.loan_backend.AccountRoles;
 import com.example.loan_backend.models.User;
 import com.example.loan_backend.repositories.UserRepository;
 
@@ -18,30 +19,34 @@ public class UserService {
     public List<User> getUserByFirstName(String pattern) {
         List<User> allUsers = new ArrayList<>();
 
-        userRepository.findAllByFirstnameStartingWithIgnoreCase(pattern).forEach(allUsers::add);
+        userRepository.findAllByFirstnameStartingWithIgnoreCaseAndRole(pattern, String.valueOf(AccountRoles.ROLE_USER))
+                .forEach(allUsers::add);
         return allUsers;
     }
 
     public List<User> getUserByLastName(String pattern) {
         List<User> allUsers = new ArrayList<>();
 
-        userRepository.findAllByLastnameStartingWithIgnoreCase(pattern).forEach(allUsers::add);
+        userRepository.findAllByLastnameStartingWithIgnoreCaseAndRole(pattern, String.valueOf(AccountRoles.ROLE_USER))
+                .forEach(allUsers::add);
         return allUsers;
     }
 
     public List<User> getUserByEmail(String pattern) {
         List<User> allUsers = new ArrayList<>();
 
-        userRepository.findAllByEmailStartingWithIgnoreCase(pattern).forEach(allUsers::add);
+        userRepository.findAllByEmailStartingWithIgnoreCaseAndRole(pattern, String.valueOf(AccountRoles.ROLE_USER))
+                .forEach(allUsers::add);
         return allUsers;
     }
 
     public Optional<User> getUniqueUserByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email);
     }
+
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
-        userRepository.findAll().forEach(allUsers::add);
+        userRepository.findAllByRole(String.valueOf(AccountRoles.ROLE_USER)).forEach(allUsers::add);
         return allUsers;
     }
 }

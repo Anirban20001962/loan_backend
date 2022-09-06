@@ -9,11 +9,13 @@ import org.springframework.data.repository.CrudRepository;
 public interface UserRepository extends CrudRepository<User, UUID> {
   public Optional<User> findByEmailIgnoreCase(String email);
 
+  public Iterable<User> findAllByRole(String role);
+
   public boolean existsByEmailIgnoreCase(String email);
 
-  public Iterable<User> findAllByFirstnameStartingWithIgnoreCase(String pattern);
+  public Iterable<User> findAllByFirstnameStartingWithIgnoreCaseAndRole(String pattern, String roles);
 
-  public Iterable<User> findAllByLastnameStartingWithIgnoreCase(String pattern);
+  public Iterable<User> findAllByLastnameStartingWithIgnoreCaseAndRole(String pattern, String roles);
 
-  public Iterable<User> findAllByEmailStartingWithIgnoreCase(String pattern);
+  public Iterable<User> findAllByEmailStartingWithIgnoreCaseAndRole(String pattern, String roles);
 }
