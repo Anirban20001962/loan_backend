@@ -9,6 +9,9 @@ import com.example.loan_backend.models.User;
 import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@SecurityRequirement(name = "bearer-key")
 public class AdminController {
     @Autowired
     private UserService userService;

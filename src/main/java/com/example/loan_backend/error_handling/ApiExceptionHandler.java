@@ -12,7 +12,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -20,14 +20,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import io.jsonwebtoken.JwtException;
 import org.hibernate.HibernateException;
 
-
-
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler
         implements CustomExceptionHandler {
 
     @Override
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status,
             WebRequest request) {
@@ -35,8 +34,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
     }
 
-
     @Override
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -44,47 +43,49 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @Override
+    @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
             HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status,
             WebRequest request) {
 
-        return buildResponseEntity(new ApiError(status, "Method not found", ex));
+        return buildResponseEntity(new ApiError(HttpStatus.METHOD_NOT_ALLOWED, "Method not found", ex));
     }
 
-
     @Override
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         return buildResponseEntity(
                 new ApiError(HttpStatus.BAD_REQUEST, "Invalid Request Value", ex));
     }
 
-
-
     /** Custom Exceptions are placed here */
 
     /** Should be thrown when an entity in database is not found */
     @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
         return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex.getMessage(), ex));
     }
 
     /** Authentication errors */
-    @ExceptionHandler({InsufficientAuthenticationException.class})
-    @ResponseBody
+    @ExceptionHandler({ InsufficientAuthenticationException.class })
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleInsufficientAuthExpections(
             InsufficientAuthenticationException ex) {
 
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, "Access Denied", ex));
     }
 
-    @ExceptionHandler({AuthenticationException.class})
+    @ExceptionHandler({ AuthenticationException.class })
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleOtherAuthException(BadCredentialsException ex,
             WebRequest webRequest) {
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, "Access Denied", ex));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleBadCredException(BadCredentialsException ex,
             WebRequest webRequest) {
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Bad Credentials", ex));
@@ -92,6 +93,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 
     /** All JwtExceptions */
     @ExceptionHandler(JwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleJwtException(Exception ex, WebRequest request) {
         return buildResponseEntity(
                 new ApiError(HttpStatus.UNAUTHORIZED, "Invalid or Expired JWT", ex));
@@ -99,6 +101,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 
     /** Hibernate Errors */
     @ExceptionHandler(HibernateException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleHibernateExceptions(HibernateException ex) {
         return buildResponseEntity(
                 new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Database Error", ex));
