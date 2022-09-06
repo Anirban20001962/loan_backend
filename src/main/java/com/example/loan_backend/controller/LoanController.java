@@ -6,6 +6,8 @@ import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/loan")
 @RestController
+@SecurityRequirement(name = "bearer-key")
 public class LoanController {
 
   @Autowired
