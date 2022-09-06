@@ -2,6 +2,12 @@ package com.example.loan_backend;
 
 import com.example.loan_backend.filter.JwtRequestFilter;
 import com.example.loan_backend.services.CustomUserDetailsService;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
+
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,6 +67,13 @@ public class SecurityConfig {
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
+  }
+
+  @Bean
+  public OpenAPI customOpenApi() {
+    return new OpenAPI()
+        .components(new Components().addSecuritySchemes("bearer-key",
+            new SecurityScheme().type(Type.HTTP).scheme("bearer").bearerFormat("JWT")));
   }
 
   @Bean
