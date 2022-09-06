@@ -20,7 +20,6 @@ import com.example.loan_backend.repositories.LoanRepository;
 import com.example.loan_backend.repositories.UserRepository;
 import com.example.loan_backend.util.JwtUtil;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
