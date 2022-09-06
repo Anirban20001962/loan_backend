@@ -1,11 +1,9 @@
 package com.example.loan_backend.controller;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.validation.constraints.Email;
 
-import com.example.loan_backend.models.User;
 import com.example.loan_backend.response.MsgDataResponse;
 import com.example.loan_backend.services.LoanService;
 import com.example.loan_backend.services.UserService;
@@ -15,10 +13,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@Validated
 @SecurityRequirement(name = "bearer-key")
 public class AdminController {
     @Autowired
@@ -28,8 +28,26 @@ public class AdminController {
     private LoanService loanService;
 
     @GetMapping(value = "/users")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<?> getUsers() {
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getAllUsers()), HttpStatus.OK);
+    }
+
+    @GetMapping("/getSearchUsersByFirstName/{firstname}")
+    public ResponseEntity<?> getUsersStartsWithFirstName(@PathVariable String firstname) {
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUserByFirstName(firstname)),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/getSearchUsersByFirstName/{lastname}")
+    public ResponseEntity<?> getUsersStartsWithLastName(@PathVariable String lastname) {
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUserByLastName(lastname)),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/getSearchUsersByFirstName/{email}")
+    public ResponseEntity<?> getUsersStartsWithEmail(@PathVariable @Email String email) {
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUserByLastName(email)),
+                HttpStatus.OK);
     }
 
     @GetMapping(value = "/getAllLoans")

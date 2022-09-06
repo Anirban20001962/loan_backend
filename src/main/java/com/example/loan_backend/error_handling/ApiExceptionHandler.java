@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,6 +19,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import io.jsonwebtoken.JwtException;
+
+import javax.validation.ConstraintViolationException;
+
 import org.hibernate.HibernateException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -49,6 +53,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
             WebRequest request) {
 
         return buildResponseEntity(new ApiError(HttpStatus.METHOD_NOT_ALLOWED, "Method not found", ex));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return buildResponseEntity(
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex));
     }
 
     @Override
@@ -84,9 +95,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, "Access Denied", ex));
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler({ BadCredentialsException.class, ConstraintViolationException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> handleBadCredException(BadCredentialsException ex,
+    public ResponseEntity<Object> handleBadCredException(RuntimeException ex,
             WebRequest webRequest) {
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Bad Credentials", ex));
     }
