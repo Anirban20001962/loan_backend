@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.example.loan_backend.response.ErrorResponse;
+
 import io.jsonwebtoken.JwtException;
 
 import javax.validation.ConstraintViolationException;
@@ -60,7 +63,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         return buildResponseEntity(
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex));
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getFieldErrors().stream().map(ErrorResponse::new).toList()));
     }
 
     @Override

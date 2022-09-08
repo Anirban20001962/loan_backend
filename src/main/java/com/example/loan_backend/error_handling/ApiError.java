@@ -6,14 +6,12 @@ import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.DEDUCTION,
-        property = "error", visible = true)
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.DEDUCTION, property = "error", visible = true)
 public class ApiError {
     private HttpStatus httpStatus;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private String message;
+    private Object message;
     private String debugMessage;
     private List<ApiSubErrors> subErrors;
 
@@ -33,12 +31,17 @@ public class ApiError {
         debugMessage = ex.getLocalizedMessage();
     }
 
-    public ApiError(HttpStatus status, String msg, Throwable ex) {
+    public ApiError(HttpStatus status, Object msg, Throwable ex) {
         this(status);
         message = msg;
         debugMessage = ex.getLocalizedMessage();
     }
 
+    public ApiError(HttpStatus status, Object msg) {
+        this(status);
+        message = msg;
+        this.debugMessage = null;
+    }
 
     // Getters and Setters
     public HttpStatus getHttpStatus() {
@@ -57,7 +60,7 @@ public class ApiError {
         this.timestamp = timestamp;
     }
 
-    public String getMessage() {
+    public Object getMessage() {
         return this.message;
     }
 
