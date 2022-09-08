@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.example.loan_backend.response.ErrorResponse;
+
 import io.jsonwebtoken.JwtException;
 
 import javax.validation.ConstraintViolationException;
@@ -60,7 +63,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         return buildResponseEntity(
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex));
+                new ApiError(HttpStatus.BAD_REQUEST, "Data Validation Error",
+                        ex.getFieldErrors().stream().map(ErrorResponse::new).toList()));
     }
 
     @Override
@@ -96,11 +100,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, "Access Denied", ex));
     }
 
-    @ExceptionHandler({ BadCredentialsException.class, ConstraintViolationException.class })
+    @ExceptionHandler({ BadCredentialsException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleBadCredException(RuntimeException ex,
             WebRequest webRequest) {
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Bad Credentials", ex));
+    }
+
+    @ExceptionHandler({ ConstraintViolationException.class })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleViolationException(RuntimeException ex,
+            WebRequest webRequest) {
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Data validation Error", ex));
     }
 
     /** All JwtExceptions */
