@@ -63,7 +63,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         return buildResponseEntity(
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getFieldErrors().stream().map(ErrorResponse::new).toList()));
+                new ApiError(HttpStatus.BAD_REQUEST, "Data Validation Error",
+                        ex.getFieldErrors().stream().map(ErrorResponse::new).toList()));
     }
 
     @Override
@@ -99,11 +100,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
         return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, "Access Denied", ex));
     }
 
-    @ExceptionHandler({ BadCredentialsException.class, ConstraintViolationException.class })
+    @ExceptionHandler({ BadCredentialsException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleBadCredException(RuntimeException ex,
             WebRequest webRequest) {
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Bad Credentials", ex));
+    }
+
+    @ExceptionHandler({ ConstraintViolationException.class })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleViolationException(RuntimeException ex,
+            WebRequest webRequest) {
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Data validation Error", ex));
     }
 
     /** All JwtExceptions */

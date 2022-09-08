@@ -11,8 +11,8 @@ public class ApiError {
     private HttpStatus httpStatus;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private Object message;
-    private String debugMessage;
+    private String message;
+    private Object debugMessage;
     private List<ApiSubErrors> subErrors;
 
     // Constructors
@@ -31,16 +31,16 @@ public class ApiError {
         debugMessage = ex.getLocalizedMessage();
     }
 
-    public ApiError(HttpStatus status, Object msg, Throwable ex) {
+    public ApiError(HttpStatus status, String msg, Throwable ex) {
         this(status);
         message = msg;
         debugMessage = ex.getLocalizedMessage();
     }
 
-    public ApiError(HttpStatus status, Object msg) {
+    public ApiError(HttpStatus status, String msg, Object debug) {
         this(status);
         message = msg;
-        this.debugMessage = null;
+        this.debugMessage = debug;
     }
 
     // Getters and Setters
@@ -60,7 +60,7 @@ public class ApiError {
         this.timestamp = timestamp;
     }
 
-    public Object getMessage() {
+    public String getMessage() {
         return this.message;
     }
 
@@ -68,7 +68,7 @@ public class ApiError {
         this.message = message;
     }
 
-    public String getDebugMessage() {
+    public Object getDebugMessage() {
         return this.debugMessage;
     }
 
