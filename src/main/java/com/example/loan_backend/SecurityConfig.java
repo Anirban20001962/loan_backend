@@ -61,7 +61,8 @@ public class SecurityConfig {
                 .denyAll())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .userDetailsService(customUserDetailsService).cors(cors -> cors.disable())
+        .userDetailsService(customUserDetailsService)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .exceptionHandling(hand -> hand.authenticationEntryPoint(authEntryPoint));
 
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -79,8 +80,10 @@ public class SecurityConfig {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("*"));
     configuration.setAllowedMethods(Arrays.asList("*"));
+    configuration.setAllowedOrigins(Arrays.asList("*"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setExposedHeaders(Arrays.asList("*"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
