@@ -11,18 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
 
-  private String username;
-  private String password;
   private List<GrantedAuthority> roles;
   private User user;
 
-  public User getUser() {
-    return this.user;
-  }
-
   public CustomUserDetails(User user) {
-    this.username = user.getEmail();
-    this.password = user.getPassword();
     this.roles = Arrays.asList(user.getRole().split(",")).stream().map(SimpleGrantedAuthority::new)
         .collect(Collectors.toList());
     this.user = user;
@@ -35,12 +27,16 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public String getPassword() {
-    return this.password;
+    return this.user.getPassword();
   }
 
   @Override
   public String getUsername() {
-    return this.username;
+    return this.user.getEmail();
+  }
+
+  public User getUser() {
+    return this.user;
   }
 
   @Override
