@@ -16,7 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getUserByFirstName(String pattern) {
+    public List<User> getUsersByFirstName(String pattern) {
         List<User> allUsers = new ArrayList<>();
 
         userRepository.findAllByFirstnameStartingWithIgnoreCaseAndRole(pattern, String.valueOf(AccountRoles.ROLE_USER))
@@ -24,7 +24,7 @@ public class UserService {
         return allUsers;
     }
 
-    public List<User> getUserByLastName(String pattern) {
+    public List<User> getUsersByLastName(String pattern) {
         List<User> allUsers = new ArrayList<>();
 
         userRepository.findAllByLastnameStartingWithIgnoreCaseAndRole(pattern, String.valueOf(AccountRoles.ROLE_USER))
@@ -32,7 +32,7 @@ public class UserService {
         return allUsers;
     }
 
-    public List<User> getUserByEmail(String pattern) {
+    public List<User> getUsersByEmail(String pattern) {
         List<User> allUsers = new ArrayList<>();
 
         userRepository.findAllByEmailStartingWithIgnoreCaseAndRole(pattern, String.valueOf(AccountRoles.ROLE_USER))

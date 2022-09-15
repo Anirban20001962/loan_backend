@@ -67,7 +67,7 @@ public class UserServiceTests {
                 String.valueOf(AccountRoles.ROLE_USER)))
                 .thenReturn(users);
 
-        List<User> found = userService.getUserByFirstName("use");
+        List<User> found = userService.getUsersByFirstName("use");
 
         assertEquals(2, found.size());
 
@@ -80,7 +80,7 @@ public class UserServiceTests {
                 String.valueOf(AccountRoles.ROLE_USER)))
                 .thenReturn(users);
 
-        List<User> found = userService.getUserByLastName("use");
+        List<User> found = userService.getUsersByLastName("use");
 
         assertEquals(2, found.size());
 
@@ -92,7 +92,7 @@ public class UserServiceTests {
         when(userRepository.findAllByEmailStartingWithIgnoreCaseAndRole("use", String.valueOf(AccountRoles.ROLE_USER)))
                 .thenReturn(users);
 
-        List<User> found = userService.getUserByEmail("use");
+        List<User> found = userService.getUsersByEmail("use");
 
         assertEquals(2, found.size());
 

@@ -34,19 +34,19 @@ public class AdminController {
 
     @GetMapping("/getSearchUsersByFirstName/{firstname}")
     public ResponseEntity<?> getUsersStartsWithFirstName(@PathVariable String firstname) {
-        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUserByFirstName(firstname)),
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUsersByFirstName(firstname)),
                 HttpStatus.OK);
     }
 
-    @GetMapping("/getSearchUsersByFirstName/{lastname}")
+    @GetMapping("/getSearchUsersByLastName/{lastname}")
     public ResponseEntity<?> getUsersStartsWithLastName(@PathVariable String lastname) {
-        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUserByLastName(lastname)),
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUsersByLastName(lastname)),
                 HttpStatus.OK);
     }
 
-    @GetMapping("/getSearchUsersByFirstName/{email}")
-    public ResponseEntity<?> getUsersStartsWithEmail(@PathVariable @Email String email) {
-        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUserByLastName(email)),
+    @GetMapping("/getSearchUsersByEmail/{email}")
+    public ResponseEntity<?> getUsersStartsWithEmail(@PathVariable String email) {
+        return new ResponseEntity<>(new MsgDataResponse("All Users", userService.getUsersByEmail(email)),
                 HttpStatus.OK);
     }
 
